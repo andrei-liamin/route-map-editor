@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import GoogleMap from '../google-map'
 import RouteEditor from '../route-editor'

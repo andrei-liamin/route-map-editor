@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Map, GoogleApiWrapper } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import './index.css';
 
 export class GoogleMap extends React.Component {
@@ -13,11 +13,22 @@ export class GoogleMap extends React.Component {
   }
 
   render() {
+    const markers = !this.props.markers ? [] : this.props.markers.map((marker) => {
+      return (
+        <Marker
+          key={marker.id}
+          name={marker.name}
+          position={marker.position} /> 
+      );
+    })
+
     return (
       <Map
         google={this.props.google}
         initialCenter={this.state.initialCenter}
-        zoom={this.state.zoom} ></Map>
+        zoom={this.state.zoom} >
+        {markers}
+      </Map>
     );
   }
 }

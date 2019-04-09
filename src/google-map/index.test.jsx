@@ -17,4 +17,23 @@ describe("GoogleMap component", () => {
         zoom: instance.state.zoom
       })).toHaveLength(1);
   });
+
+  it("contains all Markers", () => {
+    // arrange
+    const markers = [
+      {id: 0, name: "first", position: {lat: 7, lng: 8}},
+      { id: 1, name: "second", position: {lat: 8, lng: 9}}
+    ];
+
+    // action
+    const wrapper = mount(<GoogleMap markers={markers}/>);
+
+    // assert
+    markers.forEach((marker) => {
+      expect(wrapper.find({
+        name: marker.name,
+        position: marker.position
+      })).toHaveLength(1)
+    })
+  });
 })
