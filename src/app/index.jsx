@@ -1,32 +1,16 @@
 import React, { Component } from 'react';
 
-import GoogleMapReact from 'google-map-react';
+import GoogleMap from '../google-map'
 import RouteEditor from '../route-editor'
 import './index.css';
 
-class App extends Component {
-  state = {
-    center: {
-      lat: 55.7448,
-      lng: 37.6277
-    },
-    zoom: 13
-  }
-
+export default class App extends React.Component {
   render() {
     return (
       <div className="app-container">
-        <div className="map-container">
-          <GoogleMapReact
-            defaultCenter={this.state.center}
-            defaultZoom={this.state.zoom}
-          >
-          </GoogleMapReact>
-        </div>
+        <GoogleMap />
         <RouteEditor />
       </div>
     );
   }
 }
-
-export default App;
