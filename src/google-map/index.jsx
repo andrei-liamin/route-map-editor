@@ -23,12 +23,14 @@ export class GoogleMap extends React.Component {
     })
 
     return (
-      <Map
-        google={this.props.google}
-        initialCenter={this.state.initialCenter}
-        zoom={this.state.zoom} >
-        {markers}
-      </Map>
+      <div className="map">
+        <Map
+          google={this.props.google}
+          initialCenter={this.state.initialCenter}
+          zoom={this.state.zoom} >
+          {markers}
+        </Map>
+      </div>
     );
   }
 }

@@ -21,8 +21,8 @@ describe("GoogleMap component", () => {
   it("contains all Markers", () => {
     // arrange
     const markers = [
-      {id: 0, name: "first", position: {lat: 7, lng: 8}},
-      { id: 1, name: "second", position: {lat: 8, lng: 9}}
+      {id: 1, name: "first", position: {lat: 7, lng: 8}},
+      { id: 2, name: "second", position: {lat: 8, lng: 9}}
     ];
 
     // action
