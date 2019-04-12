@@ -4,7 +4,7 @@ import { shallow, mount } from 'enzyme';
 import App from '.';
 
 describe("App", () => {
-  it("renders the Google Map and RouteEditor", ()=>{
+  it("renders the Google Map and the RouteEditor", ()=>{
     // arrange
 
     // action

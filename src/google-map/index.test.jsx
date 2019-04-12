@@ -33,7 +33,27 @@ describe("GoogleMap component", () => {
       expect(wrapper.find({
         name: marker.name,
         position: marker.position
-      })).toHaveLength(1)
+      })).toHaveLength(1);
     })
+  });
+
+  it("draws a Polyline based on markers", () => {
+    // arrange
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    let polylineCoords = [];
+    markers.forEach((marker) => {
+      polylineCoords.push(marker.position);
+    });
+
+    // action
+    const wrapper = mount(<GoogleMap markers={markers} />);
+
+    // assert
+    expect(wrapper.find({
+      path: polylineCoords
+    })).toHaveLength(1);
   });
 })

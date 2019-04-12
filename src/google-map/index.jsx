@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map, Marker, Polyline, GoogleApiWrapper } from 'google-maps-react';
 import './index.css';
 
 export class GoogleMap extends React.Component {
@@ -18,9 +18,16 @@ export class GoogleMap extends React.Component {
         <Marker
           key={marker.id}
           name={marker.name}
-          position={marker.position} /> 
+          position={marker.position} />
       );
     })
+
+    let polylineCoords = [];
+    if (this.props.markers) {
+      this.props.markers.forEach((marker) => {
+        polylineCoords.push(marker.position);
+      });
+    }
 
     return (
       <div className="map">
@@ -28,6 +35,7 @@ export class GoogleMap extends React.Component {
           google={this.props.google}
           initialCenter={this.state.initialCenter}
           zoom={this.state.zoom} >
+          <Polyline path={polylineCoords} />
           {markers}
         </Map>
       </div>
