@@ -12,6 +12,10 @@ export class GoogleMap extends React.Component {
     zoom: 18
   }
 
+  logCenter = () => {
+    console.log(this.getCenter());
+  }
+
   render() {
     const markers = !this.props.markers ? [] : this.props.markers.map((marker) => {
       return (
@@ -35,11 +39,17 @@ export class GoogleMap extends React.Component {
           google={this.props.google}
           initialCenter={this.state.initialCenter}
           zoom={this.state.zoom} >
+          <button style={{position: "absolute"}} onClick={() => { 
+            console.log(this.props.google.maps.LatLng()) }} >LOG CENTER!</button>
           <Polyline path={polylineCoords} />
           {markers}
         </Map>
       </div>
     );
+  }
+
+  getCenter = () => {
+    // TODO
   }
 }
 

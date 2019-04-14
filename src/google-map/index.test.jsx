@@ -21,12 +21,12 @@ describe("GoogleMap component", () => {
   it("contains all Markers", () => {
     // arrange
     const markers = [
-      {id: 1, name: "first", position: {lat: 7, lng: 8}},
-      { id: 2, name: "second", position: {lat: 8, lng: 9}}
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
     ];
 
     // action
-    const wrapper = mount(<GoogleMap markers={markers}/>);
+    const wrapper = mount(<GoogleMap markers={markers} />);
 
     // assert
     markers.forEach((marker) => {
@@ -56,4 +56,23 @@ describe("GoogleMap component", () => {
       path: polylineCoords
     })).toHaveLength(1);
   });
+
+  it("returns center of the map", () => {
+    // arrange
+    const wrapper = shallow(<GoogleMap />);
+    const instance = wrapper.instance();
+    instance.props = {
+      ...instance.props,
+      google: jest.fn()
+    }
+    instance.props.google.getCenter = jest.fn();
+    console.log(wrapper.debug());
+    const expected = { unlucky: "unlucky" };
+
+    // action
+    const actual = instance.getCenter();
+
+    // assert
+    expect(actual).toEqual(expected);
+  })
 })
