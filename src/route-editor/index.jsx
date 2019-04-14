@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 
 export default class RouteEditor extends Component {
+  state = {
+    inputValue: ""
+  }
+
   handleChange = (event) => {
-    if (event.key === 'Enter') {
-      const name = event.target.value;
-      this.props.addNewMarkerCallback(name);
-    }
+    this.setState({
+      inputValue: event.target.value
+    });
+  }
+
+  handleKeyDown = (event) => {
+    if (event.key === 'Enter' && this.state.inputValue !== '') {
+      this.props.addNewMarkerCallback(this.state.inputValue);
+      this.setState({
+        inputValue: ""
+      });
+    };
   }
 
   render() {
@@ -18,7 +30,9 @@ export default class RouteEditor extends Component {
     return(
       <div>
         <input
-          onChange={(event) => this.handleChange(event)}
+          onChange={this.handleChange} 
+          onKeyDown={this.handleKeyDown}
+          value={this.state.inputValue}
         />
         <ol>
           {markers}

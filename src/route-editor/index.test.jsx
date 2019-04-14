@@ -19,35 +19,73 @@ describe("Route Editor", () => {
     const mockAddNewMarkerCallback = jest.fn();
     const wrapper = shallow(<RouteEditor addNewMarkerCallback={mockAddNewMarkerCallback}/>);
     const wrapperInput = wrapper.find("input");
-    const name = "marker 01"
-    const event = {
-      key: "Enter",
+    const name = "marker 01";
+    const eventChange = {
       target: { value: name }
-    }
+    };
+    const eventEnter = {
+      key: "Enter"
+    };
+    wrapperInput.simulate("change", eventChange);
 
     // action
-    wrapperInput.simulate("change", event);
+    wrapperInput.simulate("keydown", eventEnter);
 
     // assert
     expect(mockAddNewMarkerCallback).toHaveBeenCalledWith(name);
   })
 
-  it("ignores any input value if it's not enter", () => {
+  it("ignores any key down if it's not enter", () => {
     // arrange
     const mockAddNewMarkerCallback = jest.fn();
     const wrapper = shallow(<RouteEditor addNewMarkerCallback={mockAddNewMarkerCallback} />);
     const wrapperInput = wrapper.find("input");
-    const name = "marker 01"
     const event = {
-      key: "",
-      target: { value: name }
+      key: ""
     }
 
     // action
-    wrapperInput.simulate("change", event);
+    wrapperInput.simulate("keydown", event);
 
     // assert
     expect(mockAddNewMarkerCallback).toHaveBeenCalledTimes(0);
+  })
+
+  it("ignores empty input value on enter", () => {
+    // arrange
+    const mockAddNewMarkerCallback = jest.fn();
+    const wrapper = shallow(<RouteEditor addNewMarkerCallback={mockAddNewMarkerCallback} />);
+    const wrapperInput = wrapper.find("input");
+    const event = {
+      key: "Enter",
+    }
+    
+    // action
+    wrapperInput.simulate("keydown", event);
+
+    // assert
+    expect(mockAddNewMarkerCallback).toHaveBeenCalledTimes(0);
+  })
+
+  it("clears input value on enter", () => {
+    // arrange
+    const mockAddNewMarkerCallback = jest.fn();
+    const wrapper = shallow(<RouteEditor addNewMarkerCallback={mockAddNewMarkerCallback} />);
+    const name = "marker 01"
+    const eventChange = {
+      target: { value: name }
+    };
+    const eventEnter = {
+      key: "Enter"
+    };
+
+    // action
+    wrapper.find("input").simulate("change", eventChange);
+    expect(wrapper.find("input").props().value).not.toEqual("");
+    wrapper.find("input").simulate("keydown", eventEnter);
+
+    // assert
+    expect(wrapper.find("input").props().value).toEqual("");
   })
 
   it("renders list of all Markers", () => {
@@ -62,8 +100,8 @@ describe("Route Editor", () => {
 
     // assert
     markers.forEach((marker) => {
-      expect(wrapper.
-        containsMatchingElement(
+      expect(wrapper
+        .containsMatchingElement(
           <li>{marker.name}</li>
         )
       ).toBe(true);
