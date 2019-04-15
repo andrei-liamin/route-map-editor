@@ -32,6 +32,7 @@ describe("GoogleMap component", () => {
     // assert
     markers.forEach((marker) => {
       expect(wrapper.find({
+        draggable: true,
         name: marker.name,
         position: marker.position
       })).toHaveLength(1);
@@ -83,14 +84,34 @@ describe("GoogleMap component", () => {
 
   it("passes center position when map is ready", () => {
     // arrange
+    // action
     const mockOnNewCenterCallback = jest.fn();
     const instance = shallow(<GoogleMap
       onNewCenterCallback={mockOnNewCenterCallback} />).instance();
     const expected = instance.initialCenter;
 
-    // action
-
     // assert
     expect(mockOnNewCenterCallback).toHaveBeenCalledWith(expected);
   });
+
+  it("passes new position of dragged marker", () => {
+    // arrange
+    const mockOnMarkerUpdateCallback = jest.fn();
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    const expectedPosition = { lat: 1, lng: 2 };
+    const expectedId = 2;
+    const wrapper = shallow(<GoogleMap markers={markers} onMarkerUpdateCallback={mockOnMarkerUpdateCallback} />);
+    const wrapperMarker = wrapper.find({
+      name: markers[1].name
+    });
+
+    // action
+    wrapperMarker.simulate("Dragend", {}, {position: expectedPosition});
+
+    // assert
+    expect(mockOnMarkerUpdateCallback).toHaveBeenCalledWith(expectedId, expectedPosition);
+  })
 })

@@ -19,11 +19,15 @@ export class GoogleMap extends React.Component {
 
   render() {
     const markers = !this.props.markers ? [] : this.props.markers.map((marker) => {
+      const markerId = marker.id;
       return (
         <Marker
           key={marker.id}
           name={marker.name}
-          position={marker.position} />
+          position={marker.position}
+          draggable
+          onDragend={(mapProps, map) => { 
+            this.handleMarkerDragend(mapProps, map, markerId) }} />
       );
     })
 
@@ -46,6 +50,10 @@ export class GoogleMap extends React.Component {
         </Map>
       </div>
     );
+  }
+
+  handleMarkerDragend = (mapProps, map, markerId) => {
+    this.props.onMarkerUpdateCallback(markerId, map.position);
   }
 
   handleDragend = (mapProps, map) => {

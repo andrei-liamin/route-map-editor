@@ -18,12 +18,21 @@ export default class App extends React.Component {
       <div className="app-container">
         <GoogleMap
           onNewCenterCallback={this.onNewCenter}
-          markers={this.state.markers} />
+          markers={this.state.markers}
+          onMarkerUpdateCallback={this.onMarkerUpdate} />
         <RouteEditor
           markers={this.state.markers}
           addNewMarkerCallback={this.addNewMarker} />
       </div>
     );
+  }
+
+  onMarkerUpdate = (id, position) => {
+    const markers = this.state.markers.slice();
+    const index = markers.findIndex(marker => marker.id === id);
+    markers[index].position = position;
+    
+    this.setState({ markers });
   }
 
   onNewCenter = (newCenterPosition) => {

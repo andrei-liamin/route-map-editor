@@ -63,4 +63,30 @@ describe("App", () => {
     // assert
     expect(app.state.markers).toEqual(expectedMarkers);
   });
+
+  it("updates dragged marker position", () => {
+    // arrange
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    const id = 2;
+    const position = {
+      lat: 3,
+      lng: 4
+    }
+    const expectedMarkers = markers.slice();
+    expectedMarkers[1].position = position;
+
+    const app = shallow(<App />).instance();
+    app.setState({
+      markers: markers
+    });
+
+    // action
+    app.onMarkerUpdate(id, position);
+
+    // assert
+    expect(app.state.markers).toEqual(expectedMarkers);
+  });
 })
