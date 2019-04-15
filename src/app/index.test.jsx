@@ -38,12 +38,24 @@ describe("App", () => {
     ];
     const newName = "marker X";
     const id = markers.length + 1;
-    const app = shallow(<App />).instance();
+    const mockMapCenter = {
+      lat: 123,
+      lng: 321
+    }
+
+    const wrapper = mount(<App />);
+    const app = wrapper.instance();
+    app.onNewCenter(mockMapCenter);
+    
     app.setState({
       markers: markers
     });
     const expectedMarkers = markers.slice();
-    expectedMarkers.push({ id: id, name: newName });
+    expectedMarkers.push({
+      id: id,
+      name: newName,
+      position: mockMapCenter
+    });
 
     // action
     app.addNewMarker(newName);

@@ -13,8 +13,9 @@ describe("GoogleMap component", () => {
     // assert
     expect(
       wrapper.find({
-        initialCenter: instance.state.initialCenter,
-        zoom: instance.state.zoom
+        initialCenter: instance.initialCenter,
+        zoom: instance.zoom,
+        onDragend: instance.handleDragend
       })).toHaveLength(1);
   });
 
@@ -57,22 +58,39 @@ describe("GoogleMap component", () => {
     })).toHaveLength(1);
   });
 
-  it("returns center of the map", () => {
+  it("passes center of the map to the App on drag end", () => {
     // arrange
-    const wrapper = shallow(<GoogleMap />);
+    const mockOnNewCenterCallback = jest.fn();
+    const wrapper = shallow(<GoogleMap
+      onNewCenterCallback={mockOnNewCenterCallback} />);
     const instance = wrapper.instance();
-    instance.props = {
-      ...instance.props,
-      google: jest.fn()
-    }
-    instance.props.google.getCenter = jest.fn();
-    console.log(wrapper.debug());
-    const expected = { unlucky: "unlucky" };
+    const expected = { lat: 1.23, lng: 3.21 };
+    const mockMap = {
+      getCenter: () => {
+        return {
+          lat: () => expected.lat,
+          lng: () => expected.lng,
+        }
+      }
+    };
 
     // action
-    const actual = instance.getCenter();
+    instance.handleDragend(null, mockMap);
 
     // assert
-    expect(actual).toEqual(expected);
-  })
+    expect(mockOnNewCenterCallback).toHaveBeenCalledWith(expected);
+  });
+
+  it("passes center position when map is ready", () => {
+    // arrange
+    const mockOnNewCenterCallback = jest.fn();
+    const instance = shallow(<GoogleMap
+      onNewCenterCallback={mockOnNewCenterCallback} />).instance();
+    const expected = instance.initialCenter;
+
+    // action
+
+    // assert
+    expect(mockOnNewCenterCallback).toHaveBeenCalledWith(expected);
+  });
 })

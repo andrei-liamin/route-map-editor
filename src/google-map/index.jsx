@@ -4,16 +4,17 @@ import { Map, Marker, Polyline, GoogleApiWrapper } from 'google-maps-react';
 import './index.css';
 
 export class GoogleMap extends React.Component {
-  state = {
-    initialCenter: {
-      lat: 55.734319,
-      lng: 37.624176
-    },
-    zoom: 18
-  }
+  initialCenter = {
+    lat: 55.734319,
+    lng: 37.624176
+  };
+  zoom = 18;
 
-  logCenter = () => {
-    console.log(this.getCenter());
+
+  componentDidMount() {
+    if (this.props.onNewCenterCallback) {
+      this.props.onNewCenterCallback(this.initialCenter);
+    }
   }
 
   render() {
@@ -36,11 +37,10 @@ export class GoogleMap extends React.Component {
     return (
       <div className="map">
         <Map
+          onDragend={this.handleDragend}
           google={this.props.google}
-          initialCenter={this.state.initialCenter}
-          zoom={this.state.zoom} >
-          <button style={{position: "absolute"}} onClick={() => { 
-            console.log(this.props.google.maps.LatLng()) }} >LOG CENTER!</button>
+          initialCenter={this.initialCenter}
+          zoom={this.zoom} >
           <Polyline path={polylineCoords} />
           {markers}
         </Map>
@@ -48,8 +48,13 @@ export class GoogleMap extends React.Component {
     );
   }
 
-  getCenter = () => {
-    // TODO
+  handleDragend = (mapProps, map) => {
+    const getCenterValue = map.getCenter();
+    const position = {
+      lat: getCenterValue.lat(),
+      lng: getCenterValue.lng(),
+    };
+    this.props.onNewCenterCallback(position);
   }
 }
 
