@@ -23,7 +23,11 @@ export default class RouteEditor extends Component {
   render() {
     const markers = !this.props.markers ? [] : this.props.markers.map((marker) => {
       return (
-        <li key={marker.id}>{marker.name}</li>
+        <li key={marker.id}>
+          {marker.name}
+          <button
+            onClick={() => {this.props.deleteMarkerCallback(marker.id)}}>X</button>
+        </li>
       )
     })
 

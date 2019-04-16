@@ -17,7 +17,7 @@ describe("Route Editor", () => {
   it("creates new Marker on enter", () => {
     // arrange
     const mockAddNewMarkerCallback = jest.fn();
-    const wrapper = shallow(<RouteEditor addNewMarkerCallback={mockAddNewMarkerCallback}/>);
+    const wrapper = shallow(<RouteEditor addNewMarkerCallback={mockAddNewMarkerCallback} />);
     const wrapperInput = wrapper.find("input");
     const name = "marker 01";
     const eventChange = {
@@ -59,7 +59,7 @@ describe("Route Editor", () => {
     const event = {
       key: "Enter",
     }
-    
+
     // action
     wrapperInput.simulate("keydown", event);
 
@@ -88,7 +88,7 @@ describe("Route Editor", () => {
     expect(wrapper.find("input").props().value).toEqual("");
   })
 
-  it("renders list of all Markers", () => {
+  it("renders list of all Markers with delete buttons", () => {
     // arrange
     const markers = [
       { id: 1, name: "first", position: { lat: 7, lng: 8 } },
@@ -96,15 +96,37 @@ describe("Route Editor", () => {
     ];
 
     // action
-    const wrapper = shallow(<RouteEditor markers={markers}/>)
+    const wrapper = shallow(<RouteEditor markers={markers} />)
 
     // assert
     markers.forEach((marker) => {
       expect(wrapper
         .containsMatchingElement(
-          <li>{marker.name}</li>
+          <li>{marker.name}<button>X</button></li>
         )
       ).toBe(true);
     })
+  })
+
+  it("deletes Marker on nested button click", () => {
+    // arrange
+    const mockDeleteMarkerCallback = jest.fn();
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+
+    const wrapper = shallow(<RouteEditor markers={markers} deleteMarkerCallback={mockDeleteMarkerCallback} />);
+
+    const buttonWrappers = wrapper.find("li > button");
+
+    // action
+    buttonWrappers.forEach((button) => {
+      button.simulate("click");
+    });
+
+    // assert
+    expect(mockDeleteMarkerCallback).toHaveBeenCalledTimes(markers.length);
+    expect(mockDeleteMarkerCallback.mock.calls).toEqual([[markers[0].id], [markers[1].id]]);
   })
 })

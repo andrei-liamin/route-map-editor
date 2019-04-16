@@ -89,4 +89,28 @@ describe("App", () => {
     // assert
     expect(app.state.markers).toEqual(expectedMarkers);
   });
+
+  it("deletes marker", () => {
+    // arrange
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    const id = 2;
+    const index = markers.findIndex(marker => marker.id === id);
+
+    const wrapper = mount(<App />);
+    const app = wrapper.instance();
+
+    app.setState({
+      markers: markers
+    });
+    const expectedMarkers = markers.slice(0, index);
+
+    // action
+    app.deleteMarker(id);
+
+    // assert
+    expect(app.state.markers).toEqual(expectedMarkers);
+  })
 })
