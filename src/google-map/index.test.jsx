@@ -114,4 +114,52 @@ describe("GoogleMap component", () => {
     // assert
     expect(mockOnMarkerUpdateCallback).toHaveBeenCalledWith(expectedId, expectedPosition);
   })
+
+  it("opens InfoWindow on Marker click", () => {
+    // arrange
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    const wrapper = shallow(<GoogleMap markers={markers}/>);
+    const markersWrapper = wrapper.find("Marker");
+    expect(wrapper.find({
+      marker: null,
+      visible: false
+    })).toHaveLength(1);
+
+    // action
+    markersWrapper.forEach((marker, i) => {
+      marker.simulate("click", {name: markers[i].name}, marker);
+    });
+
+    // assert
+    markersWrapper.forEach((marker, i) => {
+      expect(wrapper.find({
+        marker: marker,
+        visible: true
+      })).toHaveLength(1);
+    });
+  })
+
+  it("closes InfoWindow on Map click", () => {
+    // arrange
+    const wrapper = shallow(<GoogleMap />);
+    const mapWrapper = wrapper.find("Map");
+    
+    const instance = wrapper.instance();
+    instance.setState({
+      infoWindowVisibility: true,
+      selectedMarkerName: "marker X"
+    })
+
+    // action
+    mapWrapper.simulate("click");
+
+    // assert
+    expect(wrapper.find({
+      marker: null,
+      visible: false
+    })).toHaveLength(1);
+  })
 })
