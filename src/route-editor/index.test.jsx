@@ -102,7 +102,7 @@ describe("Route Editor", () => {
     markers.forEach((marker) => {
       expect(wrapper
         .containsMatchingElement(
-          <li>{marker.name}<button>X</button></li>
+          <li draggable>{marker.name}<button>X</button></li>
         )
       ).toBe(true);
     })
@@ -129,4 +129,47 @@ describe("Route Editor", () => {
     expect(mockDeleteMarkerCallback).toHaveBeenCalledTimes(markers.length);
     expect(mockDeleteMarkerCallback.mock.calls).toEqual([[markers[0].id], [markers[1].id]]);
   })
+
+  it("saves a marker to the field on drag start", () => {
+    // arrange
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    const wrapper = shallow(<RouteEditor markers={markers}  />);
+    const markerIndexToDrag = 1;
+    const liWrapper = wrapper.find("li").at(markerIndexToDrag);
+    const instance = wrapper.instance();
+
+    // action
+    liWrapper.simulate("DragStart");
+
+    // assert
+    expect(instance.draggedMarker)
+      .toEqual(markers[markerIndexToDrag]);
+  });
+
+  it("sends reordered markers on drag over", () => {
+    // arrange
+    const mockUpdateMarkersOrderCallback = jest.fn();
+    const markers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    const expectedMarkers = [markers[1], markers[0]];
+    const wrapper = shallow(<RouteEditor markers={markers}
+      updateMarkersOrderCallback={mockUpdateMarkersOrderCallback} />);
+    const markerIndexToDrag = 1;
+    const markerIndexToDragOver = 0;
+    const draggedLiWrapper = wrapper.find("li").at(markerIndexToDrag);
+    const dragOverLiWrapper = wrapper.find("li").at(markerIndexToDragOver);
+    draggedLiWrapper.simulate("DragStart");
+
+    // action
+    dragOverLiWrapper.simulate("DragOver");
+
+    // assert
+    expect(mockUpdateMarkersOrderCallback)
+      .toHaveBeenCalledWith(expectedMarkers);
+  });
 })

@@ -23,9 +23,16 @@ export default class App extends React.Component {
         <RouteEditor
           markers={this.state.markers}
           addNewMarkerCallback={this.addNewMarker}
-          deleteMarkerCallback={this.deleteMarker} />
+          deleteMarkerCallback={this.deleteMarker}
+          updateMarkersOrderCallback={this.onUpdateMarkersOrder} />
       </div>
     );
+  }
+
+  onUpdateMarkersOrder = (markers) => {
+    this.setState({
+      markers
+    });
   }
 
   onMarkerUpdate = (id, position) => {

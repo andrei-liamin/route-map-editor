@@ -26,7 +26,8 @@ describe("App", () => {
     const app = wrapper.instance();
     expect(wrapper.find({
       markers: app.state.markers,
-      addNewMarkerCallback: app.addNewMarker
+      addNewMarkerCallback: app.addNewMarker,
+      updateMarkersOrderCallback: app.onUpdateMarkersOrder
     })).toHaveLength(1);
   });
 
@@ -109,6 +110,22 @@ describe("App", () => {
 
     // action
     app.deleteMarker(id);
+
+    // assert
+    expect(app.state.markers).toEqual(expectedMarkers);
+  })
+
+  it("updates markers order", () => {
+    // arrange
+    const expectedMarkers = [
+      { id: 1, name: "first", position: { lat: 7, lng: 8 } },
+      { id: 2, name: "second", position: { lat: 8, lng: 9 } }
+    ];
+    const wrapper = mount(<App />);
+    const app = wrapper.instance();
+
+    // action
+    app.onUpdateMarkersOrder(expectedMarkers);
 
     // assert
     expect(app.state.markers).toEqual(expectedMarkers);
