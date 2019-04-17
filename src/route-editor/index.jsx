@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import "./index.css";
+
 export default class RouteEditor extends Component {
   state = {
     inputValue: ""
@@ -14,7 +16,7 @@ export default class RouteEditor extends Component {
           key={marker.id} 
           onDragStart={() => this.onDragStart(markerIndex) }
           onDragOver={() => this.onDragOver(markerIndex)}>
-          {marker.name}
+          <span>{marker.name}</span>
           <button
             onClick={() => {this.props.deleteMarkerCallback(marker.id)}}>X</button>
         </li>
@@ -22,7 +24,7 @@ export default class RouteEditor extends Component {
     })
 
     return(
-      <div>
+      <div className="route-editor-container">
         <input
           onChange={this.handleChange} 
           onKeyDown={this.handleKeyDown}

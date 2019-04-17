@@ -1,9 +1,6 @@
 .app-container {
-  display: flex;
-}
-
-.map-container {
-  width: 500px;
+  width: 900px;
   height: 500px;
-  margin: 0 auto;
+  margin: 20px auto 0;
+  display: flex;
 }

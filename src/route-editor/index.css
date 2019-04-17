@@ -1,0 +1,69 @@
+.route-editor-container {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 18px;
+  width: 100%;
+}
+
+input, li {
+  text-decoration: none;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 28px;
+  width: auto;
+  height: 56px;
+  text-decoration: none;
+  padding-left: 15px;
+  margin: 0 0 10px 10px;
+  border: 2px solid #ccc;
+  border-radius: 3px;
+  background-color: #f9f9f9;
+}
+
+input:focus {
+  border: 2px solid #444;
+  background-color: #fff;
+  outline: 0;
+}
+
+ol {
+  overflow-y: scroll;
+  height: 100%;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  background-color: #e9e9e9;
+  border: none;
+  cursor: grab;
+  margin: 0 10px 10px;
+}
+
+li:active {
+  cursor: grabbing;
+}
+
+li > span {
+  position: relative;
+  top: -3px;
+  height: 32px;
+}
+
+li > button {
+  font-weight: bold;
+  color: #444;
+  padding: 0;
+  margin-right: 12px; 
+  border: 0;
+  border-radius: 16px;
+  width: 32px;
+  height: 32px;
+  background-color: #fff;
+  cursor: pointer;
+}

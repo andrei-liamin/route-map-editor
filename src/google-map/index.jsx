@@ -45,7 +45,7 @@ export class GoogleMap extends React.Component {
     }
 
     return (
-      <div className="map">
+      <div className="map-container">
         <Map
           onDragend={this.handleDragend}
           onClick={this.handleMapClick}
